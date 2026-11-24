@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}formations{% endblock %}
+
+{% block body %}
+    <section class="mx-auto max-w-7xl py-12 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-light tracking-tight sm:text-4xl pb-7">
+            {{ currentCategory ? 'Formations ' ~ currentCategory.name : 'Toutes nos formations' }}
+        </h2>
+
+        {# Barre des catégories #}
+        <nav class="mb-10 flex gap-3 overflow-x-auto pb-2" aria-label="Filtrer par catégorie">
+            <a href="{{ path('app_courses') }}"
+               class="btn btn-sm rounded-full {{ currentCategory is null ? 'btn-warning text-white' : 'btn-outline' }}"
+               {% if currentCategory is null %}aria-current="page"{% endif %}>
+                Toutes
+            </a>
+
+            {% for category in categories %}
+                {% set isActive = currentCategory and currentCategory.id == category.id %}
+                <a href="{{ path('app_course_category', { slug: category.slug }) }}"
+                   class="btn btn-sm rounded-full whitespace-nowrap {{ isActive ? 'btn-warning text-white' : 'btn-outline' }}"
+                   {% if isActive %}aria-current="page"{% endif %}>
+                    {{ category.name }}
+                </a>
+            {% endfor %}
+        </nav>
+
+        <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 lg:gap-10">
+            {% for course in courses %}
+                <article class="group overflow-hidden rounded-2xl bg-base-100 shadow-sm ring-1 ring-base-300 transition hover:-translate-y-1 hover:shadow-xl">
+                    <figure class="relative overflow-hidden">
+                        <img
+                            src="{{ asset('images/formation/' ~ course.image) }}"
+                            alt="Illustration de la formation {{ course.name }}"
+                            class="h-64 w-full object-cover transition duration-500 group-hover:scale-105">
+                        <span class="badge border-[#e8a33d] bg-[#e8a33d] text-white absolute left-4 top-4">
+                            {{ course.categoryId.name|upper }}
+                        </span>
+                    </figure>
+                    <div class="p-6">
+                        <div class="flex items-center gap-2 text-sm text-base-content/50">
+                            {{ ux_icon('lucide:calendar', {class: 'h-4 w-4'}) }}
+                            <time datetime="{{ course.createdAt|date('Y-m-d') }}">
+                                {{ course.createdAt|date('d/m/Y') }}
+                            </time>
+                        </div>
+                        <h2 class="mt-3 text-2xl font-[600] tracking-tight">
+                            {{ course.name|capitalize }}
+                        </h2>
+                        <span class="mt-3 inline-flex items-center gap-1 text-base-content/70">
+                            {{ course.price }}
+                            {{ ux_icon('tabler:currency-euro', {class: 'h-4 w-4'}) }}
+                            {{ course.duration }}
+
+                        </span>
+                        <div class="mt-6">
+                            <a href="{{ path('app_course', {slug: course.slug}) }}"
+                               class="btn btn-warning btn-sm text-white">
+                                Voir la formation
+                                {{ ux_icon('lucide:arrow-right', {class: 'h-4 w-4'}) }}
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            {% else %}
+                <p class="col-span-full text-base-content/60">Aucune formation dans cette catégorie pour le moment.</p>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Actualités{% endblock %}
+
+{% block body %}
+    <section class="mx-auto my-10 max-w-6xl bg-base-200/60 px-6 py-8 sm:px-8">
+
+        <h1 class="mb-8 text-3xl font-light">Toutes nos actualités</h1>
+
+        {% if actualites is empty %}
+            <p class="text-base-content/70">Aucune actualité publiée pour le moment.</p>
+        {% else %}
+            <div class="grid gap-8 md:grid-cols-2">
+                {% for actualite in actualites %}
+
+                    {# ===== Carte ===== #}
+                    <article class="flex gap-4 rounded-md bg-base-100 p-6 shadow-sm">
+                        <img src="{{ asset('images/actualites/' ~ actualite.image) }}"
+                             alt=""
+                             class="h-10 w-10 shrink-0 object-contain"
+                             loading="lazy">
+
+                        <div class="flex flex-1 flex-col">
+                            <h2 class="text-lg">
+                                {{ actualite.name }} - {{ actualite.createdAt|date('d/m/Y') }}
+                            </h2>
+                            <p class="mt-2 text-sm leading-relaxed text-base-content/80">
+                                {{ actualite.content }}
+                            </p>
+                            <button type="button"
+                                    class="mt-4 self-end text-sm text-primary hover:underline"
+                                    onclick="document.getElementById('news-modal-{{ actualite.id }}').showModal()">
+                                Lire la suite...
+                            </button>
+                        </div>
+                    </article>
+
+                    {# ===== Fenêtre modale ===== #}
+                    <dialog id="news-modal-{{ actualite.id }}" class="modal">
+                        <div class="modal-box max-w-2xl rounded-sm p-0">
+
+                            {# En-tête #}
+                            <div class="flex items-center justify-between border-b border-base-300 px-5 py-4">
+                                <h3 class="text-xl">{{ actualite.name }}</h3>
+                                <form method="dialog">
+                                    <button class="text-2xl leading-none text-base-content/50 hover:text-base-content"
+                                            aria-label="Fermer">&times;</button>
+                                </form>
+                            </div>
+
+                            {# Corps #}
+                            <div class="px-5 py-5">
+                                <time class="text-lg" datetime="{{ actualite.createdAt|date('Y-m-d') }}">
+                                    {{ actualite.createdAt|date('d/m/Y') }}
+                                </time>
+                                <div class="mt-4 flex flex-col gap-6 sm:flex-row">
+                                    <img src="{{ asset('images/formation/' ~ actualite.image) }}"
+                                         alt="{{ actualite.name }}"
+                                         class="h-24 w-24 shrink-0 object-contain">
+                                    <div class="text-base-content/80">
+                                        {{ actualite.content|raw }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {# Pied #}
+                            <div class="flex justify-end border-t border-base-300 px-5 py-4">
+                                <form method="dialog">
+                                    <button class="btn btn-primary">Close</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        {# Clic en dehors = fermeture #}
+                        <form method="dialog" class="modal-backdrop"><button>fermer</button></form>
+                    </dialog>
+
+                {% endfor %}
+            </div>
+        {% endif %}
+    </section>
+{% endblock %}

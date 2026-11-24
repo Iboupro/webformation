@@ -1,0 +1,30 @@
+{% set route = app.request.attributes.get('_route') %}
+
+<div class="rounded-box bg-base-100 p-4 shadow-sm">
+    <p class="font-medium">{{ app.user.firstName }} {{ app.user.lastName }}</p>
+    <p class="text-sm text-base-content/60">{{ app.user.email }}</p>
+</div>
+
+<ul class="menu mt-4 w-full rounded-box bg-base-100 p-2 shadow-sm">
+    <li>
+        <details {{ route starts with 'admin_course' ? 'open' }}>
+            <summary>{{ ux_icon('lucide:graduation-cap', {class: 'size-4'}) }} Les cours</summary>
+            <ul>
+                <li><a href="{{ path('admin_course_index') }}" class="{{ route == 'admin_course_index' ? 'active' }}">Gestion des cours</a></li>
+                <li><a href="{{ path('admin_course_new') }}" class="{{ route == 'admin_course_new' ? 'active' }}">Ajouter un cours</a></li>
+            </ul>
+        </details>
+    </li>
+{#    <li><a href="{{ path('admin_comment_index') }}" class="{{ route starts with 'admin_comment' ? 'active' }}">{{ ux_icon('lucide:messages-square', {class: 'size-4'}) }} Les commentaires</a></li>#}
+{#    <li><a href="{{ path('admin_registration_index') }}" class="{{ route starts with 'admin_registration' ? 'active' }}">{{ ux_icon('lucide:users', {class: 'size-4'}) }} Les inscriptions</a></li>#}
+    <li>
+        <details {{ route starts with 'admin_news' ? 'open' }}>
+            <summary>{{ ux_icon('lucide:newspaper', {class: 'size-4'}) }} Les actualités</summary>
+            <ul>
+              <li><a href="{{ path('admin_news_index') }}">Gestion des actualités</a></li>
+               <li><a href="{{ path('admin_news_new') }}">Ajouter une actualité</a></li>
+            </ul>
+        </details>
+    </li>
+   <li><a href="{{ path('admin_user_index') }}" class="{{ route starts with 'admin_user' ? 'active' }}">{{ ux_icon('lucide:user-cog', {class: 'size-4'}) }} Les utilisateurs</a></li>
+</ul>

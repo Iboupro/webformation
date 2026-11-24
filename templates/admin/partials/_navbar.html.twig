@@ -1,0 +1,16 @@
+<nav class="navbar bg-primary text-primary-content shadow">
+    <div class="flex-1 gap-2">
+        <a href="{{ path('admin_dashboard') }}" class="px-3 text-lg font-semibold">Easy Learning – Administration</a>
+        <a href="{{ path('admin_dashboard') }}" class="btn btn-ghost btn-sm hidden sm:inline-flex">
+            {{ ux_icon('lucide:layout-dashboard', {class: 'size-4'}) }} Tableau de bord
+        </a>
+    </div>
+    <div class="flex-none gap-2">
+        <a href="{{ path('app_home') }}" class="btn btn-ghost btn-sm">
+            {{ ux_icon('lucide:external-link', {class: 'size-4'}) }} Voir le site
+        </a>
+        <a href="{{ path('app_logout') }}" class="btn btn-ghost btn-sm">
+            {{ ux_icon('lucide:log-out', {class: 'size-4'}) }} Déconnexion
+        </a>
+    </div>
+</nav>

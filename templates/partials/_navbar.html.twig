@@ -1,0 +1,103 @@
+
+{% set current_route = app.request.attributes.get('_route') %}
+
+{# Adaptez les noms de routes du projet #}
+{% set menu = [
+    { label: 'Home',    route: 'app_home',   match: 'app_home' },
+    { label: 'Courses', route: 'app_courses', match: 'app_courses' },
+    { label: 'News',    route: 'app_news',   match: 'app_news' },
+    { label: 'Contact', route: 'app_contact', match: 'app_contact' },
+] %}
+
+<header class="bg-[#1f3a34] text-[#f5f0e6]">
+    <div class="navbar mx-auto max-w-7xl min-h-16 px-4 lg:px-8">
+
+        {# Gauche : burger mobile + logo #}
+        <div class="navbar-start">
+            <div class="dropdown lg:hidden">
+                <button type="button" tabindex="0" class="btn btn-ghost btn-square hover:bg-white/10" aria-label="Ouvrir le menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h10"/>
+                    </svg>
+                </button>
+                <ul tabindex="0" class="menu dropdown-content z-20 mt-3 w-52 rounded-box bg-white p-2 text-[#1f3a34] shadow-lg">
+                    {% for item in menu %}
+                        <li>
+                            <a href="{{ path(item.route) }}"
+                               class="{{ current_route starts with item.match ? 'font-bold text-[#c4552d]' : '' }}">
+                                {{ item.label }}
+                            </a>
+
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <a href="{{ path('app_home') }}" class="font-['Fraunces',serif] text-2xl font-black tracking-tight">
+                Easy<span class="text-[#e8a33d]">Learning</span>
+            </a>
+        </div>
+
+        {# Centre : liens desktop #}
+        <nav class="navbar-center hidden lg:flex" aria-label="Navigation principale">
+            <ul class="menu menu-horizontal gap-2 px-1 text-base">
+                {% for item in menu %}
+                    {% set active = current_route starts with item.match %}
+                    <li>
+                        <a href="{{ path(item.route) }}"
+                           {% if active %}aria-current="page"{% endif %}
+                           class="bg-transparent hover:bg-white/10 {{ active ? 'text-[#e8a33d]' : 'text-[#f5f0e6]/80' }}">
+                            {{ item.label }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </nav>
+
+        {# Droite : compte #}
+        <div class="navbar-end">
+            <div class="dropdown dropdown-end">
+                <button type="button" tabindex="0"
+                        class="btn btn-sm justify-between rounded-full border-0 bg-[#e8a33d] px-4 text-[#1f3a34] hover:bg-[#e8a33d]/90 ">
+                    {% if app.user %}
+                        <div class="flex  items-center gap-2">
+                            {% if app.user.image%}
+                            <img
+                                src="{{ asset('images/users/' ~ app.user.image) }}"
+                                alt="{{ app.user.firstName }}"
+                                class="w-10 h-10 rounded-full object-cover border-2 border-gray-200 shadow-sm">
+                            {% else %}
+                            src="{{ asset('images/users/'  ~ default.png) }}"
+                            alt="{{ app.user.firstName }}"
+                            class="w-10 h-10 rounded-full object-cover border-2 border-gray-200 shadow-sm">
+                            {% endif %}
+                            <span class="text-sm font-medium text-gray-700">
+                            {{ app.user.firstName}}
+                            </span>
+                        </div>
+                    {% else %}
+                        Mon compte
+                    {% endif %}
+                    <span aria-hidden="true">{{ ux_icon('picon:down') }}</span>
+                </button>
+
+                <ul tabindex="0"
+                    class="menu dropdown-content z-20 mt-3 w-60 rounded-box bg-white p-2 text-[#1f3a34] shadow-lg">
+                    {% if app.user %}
+                        <li><a href="#"> {{ ux_icon('solar:user-bold') }} Mon profil</a></li>
+                       <a href="{{ path('app_use_edit_compte',{id: app.user.id}) }}"> {{ ux_icon('material-symbols-light:edit-outline-sharp') }} Modifier mon compte</a></li>
+                        <a href="{{ path('app_use_edit_password',{id: app.user.id}) }}"> {{ ux_icon('material-symbols-light:edit-outline-sharp') }} Modifier mon mot de passe</a></li>
+
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <li><a href="{{ path('admin_dashboard') }}">{{ ux_icon('oui:nav-administration') }} Administration</a></li>
+                        {% endif %}
+                        <li><a href="{{logout_path()}}" class="text-[#c4552d]">Déconnexion</a></li>
+                    {% else %}
+                        <li><a href="{{ path('app_login') }}">Connexion</a></li>
+                        <li><a href="{{ path('app_register') }}">Créer un compte</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>

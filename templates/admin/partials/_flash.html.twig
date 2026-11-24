@@ -1,0 +1,7 @@
+{% for type, messages in app.flashes %}
+    {% for message in messages %}
+        <div role="alert" class="alert mb-4 {{ {success: 'alert-success', danger: 'alert-error', error: 'alert-error', warning: 'alert-warning', info: 'alert-info'}[type]|default('alert-info') }}">
+            <span>{{ message }}</span>
+        </div>
+    {% endfor %}
+{% endfor %}

@@ -1,0 +1,18 @@
+{# templates/partials/_footer.html.twig #}
+<footer class="bg-[#1f3a34] text-[#f5f0e6]/70">
+    <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-4 py-4 text-sm sm:flex-row lg:px-8">
+        <p>© EasyLearning {{ 'now'|date('Y') }}</p>
+
+        <nav aria-label="Navigation du pied de page">
+            <ul class="flex items-center gap-2">
+                <li><a href="{{ path('app_home') }}" class="link link-hover">Home</a></li>
+                <li aria-hidden="true">·</li>
+                <li><a href="{{ path('app_courses') }}" class="link link-hover">Courses</a></li>
+                <li aria-hidden="true">·</li>
+                <li><a href="{{ path('app_news') }}" class="link link-hover">News</a></li>
+                <li aria-hidden="true">·</li>
+                <li><a href="{{ path('app_contact') }}" class="link link-hover">Contact</a></li>
+            </ul>
+        </nav>
+    </div>
+</footer>

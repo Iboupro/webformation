@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Administration{% endblock %} – Easy Learning</title>
+
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+
+    {% block javascripts %}
+        {% block importmap %}{{ importmap('app') }}{% endblock %}
+    {% endblock %}
+</head>
+<body class="min-h-screen bg-base-200">
+
+{% include 'admin/partials/_navbar.html.twig' %}
+
+<div class="mx-auto flex max-w-screen-2xl flex-col gap-6 p-4 lg:flex-row lg:p-6">
+    <aside class="w-full shrink-0 lg:w-64">
+        {% include 'admin/partials/_sidebar.html.twig' %}
+    </aside>
+
+    <main class="min-w-0 flex-1">
+        {% include 'admin/partials/_flash.html.twig' %}
+
+        <header class="mb-6 flex flex-wrap items-center justify-between gap-3">
+            <h1 class="text-2xl font-semibold">{% block page_title %}{% endblock %}</h1>
+            <div>{% block page_actions %}{% endblock %}</div>
+        </header>
+
+        {% block body %}{% endblock %}
+    </main>
+</div>
+</body>
+</html>

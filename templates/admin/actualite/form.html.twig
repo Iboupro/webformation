@@ -1,0 +1,22 @@
+
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}
+    {{ news.id ? 'Modifier l actualite' : 'Ajouter un actualite' }}
+
+{% endblock %}
+
+{% block body %}
+    <section class=" max-w-4xl mx-auto">
+        <div class="flex justify-between my-12">
+            <h1 class="text-3xl font-light"> {{ news.id ? 'Modifier l actualite' : 'Ajouter un actualité' }}</h1>
+            <a href="{{ path('admin_news_index') }}" class="btn btn-ghost"><- Retour aux actualité  </a>
+        </div>
+        <div class="admin">
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <input type="submit" value="{{ news.id ? 'Modifier l actualite' : 'Ajouter l \'actualite' }}" class="btn btn-primary text-white mt-4 w-[20rem]">
+            {{ form_end(form) }}
+        </div>
+    </section>
+{% endblock %}

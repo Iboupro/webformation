@@ -1,0 +1,61 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Gestion des actualités{% endblock %}
+{% block page_title %}Gestion des actualités{% endblock %}
+
+{% block page_actions %}
+    <a href="{{ path('admin_news_new') }}" class="btn btn-primary btn-sm">
+        {{ ux_icon('lucide:plus', {class: 'size-4'}) }} Ajouter une actualité
+    </a>
+{% endblock %}
+
+{% block body %}
+    <div class="overflow-x-auto rounded-box bg-base-100 shadow-sm">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Image</th>
+                <th>Titre</th>
+                <th>Extrait</th>
+                <th>Publiée le</th>
+                <th class="text-right">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in pagination %}
+                <tr class="hover">
+                    <td>
+                        {% if item.image %}
+                            <img src="{{asset('images/actualites/' ~ item.image)  }}" alt="" class="h-10 w-14 rounded object-cover">
+                        {% else %}
+                            <div class="flex h-10 w-14 items-center justify-center rounded bg-base-200 text-base-content/40">
+                                {{ ux_icon('lucide:image', {class: 'size-4'}) }}
+                            </div>
+                        {% endif %}
+                    </td>
+                    <td class="font-medium">{{ item.name }}</td>
+                    <td class="max-w-xs truncate text-base-content/70">{{ item.content|striptags|slice(0, 90) }}…</td>
+                    <td class="whitespace-nowrap">{{ item.createdAt|date('d/m/Y') }}</td>
+                    <td>
+                        <div class="flex justify-end gap-1">
+                            <a href="{{ path('admin_news_edit', {id: item.id}) }}" class="btn btn-square btn-sm btn-primary" title="Modifier">
+                                {{ ux_icon('lucide:square-pen', {class: 'size-4'}) }}
+                            </a>
+                            <form method="post" action="{{ path('admin_news_delete', {id: item.id}) }}" onsubmit="return confirm('Supprimer cette actualité ?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ item.id) }}">
+                                <button class="btn btn-square btn-sm btn-error" title="Supprimer">
+                                    {{ ux_icon('lucide:trash-2', {class: 'size-4'}) }}
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr><td colspan="5" class="py-10 text-center text-base-content/60">Aucune actualité pour le moment.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% include 'admin/partials/_pagination.html.twig' %}
+{% endblock %}

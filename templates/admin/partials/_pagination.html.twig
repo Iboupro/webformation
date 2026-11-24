@@ -1,0 +1,6 @@
+{# Utilisation : {% include 'admin/partials/_pagination.html.twig' with {pagination: pagination} %} (KnpPaginatorBundle) #}
+{% if pagination.pageCount > 1 %}
+    <div class="mt-4 flex justify-center">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+{% endif %}

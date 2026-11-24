@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails{% endblock %}
+
+{% block body %}
+   <section class="max-w-6xl mx-auto px-4 py-10">
+    <h1 class="text-3xl font-semibold mb-8">{{ course.name }}</h1>
+
+    <div role="tablist" class="tabs tabs-lift">
+
+        {# ---------- Onglet 1 : Profile ---------- #}
+        <input type="radio" name="course_tabs" role="tab" class="tab" aria-label="Profile" checked="checked" />
+        <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+                {# Illustration #}
+                <div>
+                        <img src="{{ asset('images/formation/' ~ course.image) }}"
+                             alt="Illustration de la formation {{ course.name }}"
+                             class="w-full rounded-box shadow object-cover">
+                </div>
+
+                {# Description + informations #}
+                <div>
+                    <h2 class="text-xl font-medium mb-2">Description</h2>
+                    <p class="mb-6">{{ course.smallDescription }}</p>
+
+                    <h2 class="text-xl font-medium mb-2">Informations</h2>
+                    <ul class="space-y-2">
+                        <li><span class="font-medium">Prix :</span> {{ course.price }} €</li>
+                        <li><span class="font-medium">Durée :</span> {{ course.duration }}</li>
+                        <li><span class="font-medium">Catégorie :</span> {{ course.categoryId.name }}</li>
+                        <li><span class="font-medium">Ajouté le :</span> {{ course.createdAt|date('d/m/Y') }}</li>
+                        <li class="flex items-center gap-2">
+                            <span class="font-medium">Niveau :</span>
+
+                            <div class="tooltip tooltip-right" data-tip="{{ course.levelId.name }}">
+                                <span class="badge badge-outline badge-lg cursor-help" title="{{ course.levelId.name }}">
+                                    {{ course.levelId.name }}
+                                </span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        {# ---------- Onglet 2 : Détail ---------- #}
+        <input type="radio" name="course_tabs" role="tab" class="tab" aria-label="Détail" />
+        <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-6">
+            <h2 class="text-xl font-medium mb-4">Description complète</h2>
+
+            <div class="space-y-4 max-w-3xl">
+
+                {{ course.fullDescription|escape|nl2br }}
+            </div>
+
+            {% if course.program %}
+                <a href="{{ asset('images/program/' ~ course.program) }}"
+                   class="btn btn-primary mt-6"
+                   download>
+                    Télécharger le programme
+                </a>
+            {% endif %}
+        </div>
+
+        ---------- Étape 5 (à activer plus tard) ----------
+        <input type="radio" name="course_tabs" role="tab" class="tab" aria-label="Commentaires" />
+        <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-6">
+            ... liste des commentaires + note globale en étoiles ...
+        </div>
+        {% if app.user %}
+        <input type="radio" name="course_tabs" role="tab" class="tab" aria-label="Postez un commentaire" />
+        <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-6">
+            <div class="max-w-4xl mx-auto bg-grey-200 flex-wrap justify-items-center m-5 p-5">
+                <div class="w-[50%] register">
+                    {{ form_errors(form) }}
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    <button type="submit" class="btn btn-primary mt-4 w-[20rem]">Commenter</button>
+                    {{ form_end(form) }}
+                </div>
+
+            </div>
+        </div>
+
+{% endif %}
+    </div>
+
+    <div class="mt-8">
+        <a href="{{ path('app_courses') }}" class="btn btn-ghost">← Retour aux formations</a>
+    </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Tableau de bord{% endblock %}
+{% block page_title %}Tableau de bord{% endblock %}
+
+{% block body %}
+    <div class="stats stats-vertical w-full bg-base-100 shadow-sm md:stats-horizontal">
+        <div class="stat">
+            <div class="stat-title">Cours</div>
+            <div class="stat-value">{{ stats.courses }}</div>
+            <div class="stat-desc">{{ stats.publishedCourses }} publiés</div>
+        </div>
+        <div class="stat">
+            <div class="stat-title">Utilisateurs</div>
+            <div class="stat-value">{{ stats.users }}</div>
+        </div>
+        <div class="stat">
+            <div class="stat-title">Commentaires</div>
+            <div class="stat-value">{{ stats.comments }}</div>
+        </div>
+        <div class="stat">
+            <div class="stat-title">Actualités</div>
+            <div class="stat-value">{{ stats.news }}</div>
+        </div>
+    </div>
+{% endblock %}
